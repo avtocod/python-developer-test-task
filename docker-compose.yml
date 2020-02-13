@@ -7,4 +7,3 @@ services:
       - /etc/passwd:/etc/passwd:cached
       - /etc/group:/etc/group:cached
       - .:/app:cached
-    command: python
