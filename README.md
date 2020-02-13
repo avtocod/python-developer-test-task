@@ -1,4 +1,9 @@
-# Тестовое задание
+# Тестовое задание для python-разработчика
+
+![Project language][badge_language]
+![Docker][badge_docker]
+[![Build Status][badge_build]][link_build]
+[![Do something awesome][badge_use_template]][use_this_repo_template]
 
 ### Описание
 Реализовать сервис, который обходит произвольный сайт с глубиной до 2 и сохраняет `html`, `url` и `title` страницы в хранилище.
@@ -73,5 +78,10 @@ spider.py get http://www.vesti.ru/ -n 2
 
 > Если в процессе выполнения у вас возникнут какие-либо неразрешимые вопросы - создайте [соответствующий issue][link_create_issue] в данном репозитории. На вопросы касательно деталей реализации ("А лучше так и так?") - вероятнее всего вы получите ответ "Как вы посчитаете правильнее".
 
+[badge_build]:https://github.com/avtocod/python-developer-test-task/workflows/build/badge.svg
+[badge_language]:https://img.shields.io/badge/python-3-yellow?longCache=true
+[badge_docker]:https://img.shields.io/badge/docker-enable-blue?longCache=true
+[badge_use_template]:https://img.shields.io/badge/start-this_template_using-success.svg?longCache=true
+[link_build]:https://github.com/avtocod/python-developer-test-task/actions
 [link_create_issue]:https://github.com/avtocod/python-developer-test-task/issues/new
 [use_this_repo_template]:https://github.com/avtocod/python-developer-test-task/generate
