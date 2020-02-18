@@ -1,11 +1,11 @@
 FROM python:3-alpine
 
-COPY ./requirements.txt /requirements.txt
-COPY ./requirements-dev.txt /requirements-dev.txt
+COPY ./requirements.txt ./requirements-dev.txt /app/
+
+WORKDIR /app
 
 RUN pip install -r requirements.txt -r requirements-dev.txt
 
-COPY . /app
-WORKDIR /app
+COPY . .
 
 CMD python
