@@ -24,9 +24,6 @@ shell: ## Start shell into container
 test: ## Execute tests
 	$(dc_bin) run $(RUN_APP_ARGS) pytest
 
-pull: ## Pulling newer versions of used docker images
-	$(dc_bin) pull
-
 start: ## Start services
 	$(dc_bin) up --detach
 
