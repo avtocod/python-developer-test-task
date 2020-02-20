@@ -4,15 +4,11 @@ Makefile
 docker*.yml
 *.log
 .gitignore
-.gitlab-ci.yml
 .editorconfig
-.gitlab
 .idea
 .git
 
 tests
-scripts
-readme
 
 **/__pycache__
 **/*.pyc

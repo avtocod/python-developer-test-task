@@ -7,7 +7,7 @@ dc_bin := $(shell command -v docker-compose 2> /dev/null)
 SHELL = /bin/sh
 RUN_APP_ARGS = --rm --user "$(shell id -u):$(shell id -g)" app
 
-.PHONY : help init install shell test lint pull start shutdown restart logs clean
+.PHONY : help build shell test lint start shutdown restart logs clean
 .DEFAULT_GOAL : help
 
 # This will output the help for each task. thanks to https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
@@ -24,16 +24,19 @@ shell: ## Start shell into container
 test: ## Execute tests
 	$(dc_bin) run $(RUN_APP_ARGS) pytest
 
+lint:
+	$(dc_bin) run $(RUN_APP_ARGS) flake8 .
+
 start: ## Start services
 	$(dc_bin) up --detach
 
 shutdown: ## Stop services
 	$(dc_bin) down -t 5
 
+restart: shutdown start ## Restart all containers
+
 logs: ## Show logs
 	$(dc_bin) logs -f app
-
-restart: shutdown start ## Restart all containers
 
 clean:
 	$(dc_bin) down -v
