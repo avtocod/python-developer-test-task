@@ -65,12 +65,12 @@ spider.py get http://www.vesti.ru/ -n 2
 
 * Приложение должно успешно запускаться после выполнения:
 
-    ```bash
-    $ git clone ...
-    $ make build
-    $ docker-compose up -d
-    $ docker-compose run --rm app ./app
-    ```
+```bash
+$ git clone ...
+$ make build
+$ docker-compose up -d
+$ docker-compose run --rm app ./app
+```
 
 * Проходить _все_ тесты (при их наличии).
 
