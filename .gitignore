@@ -24,6 +24,9 @@ wheels/
 .installed.cfg
 *.egg
 MANIFEST
+.idea
+.idea/
+
 
 # Installer logs
 pip-log.txt

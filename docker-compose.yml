@@ -1,9 +1,18 @@
 version: '3.2'
 
 services:
-  app:
-    build: .
+  spyder:
+
+    container_name: smart_gate_is_api
+
+    build:
+      context: ./build/
+
+    image: face_detector_trainer
+
     volumes:
       - /etc/passwd:/etc/passwd:cached
       - /etc/group:/etc/group:cached
       - .:/app:cached
+
+    command: python3 /app/spyder.py --command export
