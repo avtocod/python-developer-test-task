@@ -11,8 +11,6 @@ services:
     image: web_crawler
 
     volumes:
-      - /etc/passwd:/etc/passwd:cached
-      - /etc/group:/etc/group:cached
-      - .:/app:cached
+      - /app/:/app/
 
-    command: python3 ./app/spyder.py get http://tass.ru/ural --depth 2
+    command: python3 spyder.py get http://tass.ru/ural --depth 2
