@@ -1,8 +1,11 @@
-import sys
-import argparse
 import os
+import sys
+import time
+import argparse
+from memory_profiler import memory_usage
 import logging
 import logging.config
+from tools.crawler import start_crawling
 
 
 def parse_arguments(args):
@@ -30,14 +33,23 @@ def main(args):
     if not os.path.exists(args.logs_dir):
         os.makedirs(args.logs_dir)
 
-    logging.config.fileConfig(args.logging_yaml)
+    # logging.config.fileConfig(args.logging_yaml)
 
     if len(sys.argv) >= 3:
         command = sys.argv[1]
         link = sys.argv[2]
+        depth = args.depth
 
         if command == 'load':
+            logging.info('load')
             print('load')
+            start_time = time.time()
+            #start_crawling(base_url=link, depth=0)
+            mem = max(memory_usage(proc=start_crawling(base_url=link,
+                                                       depth=depth)))
+            # Stop time counting
+            execution_time = time.time() - start_time
+            print(f"ok, execution time: {execution_time:.3f}s, peak memory usage: {mem} Mb")
         elif command == 'get':
             print('get')
         else:
@@ -46,7 +58,6 @@ def main(args):
             logging.error("There must be at least command and website link!")
             logging.info("Ex: 'spider.py load http://www.vesti.ru/ --depth 2")
 
-        print(command)
         print(link)
 
     else:

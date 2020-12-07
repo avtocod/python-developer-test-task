@@ -11,6 +11,6 @@ services:
     image: web_crawler
 
     volumes:
-      - /app/:/app/
+      - ./app/:/app/
 
-    command: python3 spyder.py get http://tass.ru/ural --depth 2
+    command: python3 -u ./spyder.py load http://tass.ru/ural --depth 2

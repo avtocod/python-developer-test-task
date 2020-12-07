@@ -42,9 +42,6 @@ class Spyder(object):
         :param url:    url to get data from
         :return:       data
         """
-        # with requests.Session() as session:
-        # with session.get(url) as response:
-
         with session.get(url) as response:
             html = response.text
             if response.status_code != 200:
@@ -57,35 +54,35 @@ class Spyder(object):
                 if link.has_attr('href'):
                     if 'https:' in link['href']:
                         links.append(link['href'])
-            # print(depth, html[0:15], links, title)
+            print(depth, title, html[0:15], links[:3])
             # print(self.urls)
-            self.urls_to_save[depth] += links
+            if depth < self.max_depth:
+                self.urls_to_save[depth+1] += links
             # TODO: save to DB
             return depth, html[0:15], links, title
 
 
     async def get_data_async(self, urls: List[str], depth: int):
         """
-
+        Method to get data from urls async
         :param urls:
         :return:
         """
+        urls = list(set(urls))
         with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
             with requests.Session() as session:
-                # Set any session parameters here before calling `fetch`
                 loop = asyncio.get_event_loop()
                 tasks = [
                     loop.run_in_executor(
                         executor,
                         self.get_url_data,
                         *(session, url, depth)
-                        # Allows us to pass in multiple arguments to `fetch`
                     )
                     for url in urls
                 ]
 
-                for response in await asyncio.gather(*tasks):
-                    print(response)
+                #for response in await asyncio.gather(*tasks):
+                #    print(response)
 
 
     def grab(self, base_url: str, depth: int = 0) -> None:
@@ -94,9 +91,9 @@ class Spyder(object):
         :param base_url:    url for start
         :return:            None
         """
+        self.max_depth = depth
         self.urls_to_save = dict([(i, []) for i in range(depth + 1)])
 
-        depth_i = -1
         if 0 <= depth <= self.max_depth:
             self.urls = [base_url]
 
@@ -104,31 +101,31 @@ class Spyder(object):
                 self.get_url_data(session, base_url, depth=0)
             print(self.urls_to_save)
             if depth != 0:
-                #for depth_i, links in self.urls_to_save.items():
-                for depth_i in range(depth):
-                    print(depth_i)
+                #for depth_i in range(depth+1):
+                print(0)
+                loop = asyncio.get_event_loop()
+                future = asyncio.ensure_future(self.get_data_async(
+                                self.urls_to_save[0], 0))
+                loop.run_until_complete(future)
+                if depth >= 1:
                     loop = asyncio.get_event_loop()
                     future = asyncio.ensure_future(self.get_data_async(
-                                    self.urls_to_save[depth_i], depth_i))
+                                    self.urls_to_save[1], 1))
                     loop.run_until_complete(future)
+                    if depth == 2:
+                        loop = asyncio.get_event_loop()
+                        future = asyncio.ensure_future(self.get_data_async(
+                                        self.urls_to_save[2], 2))
+                        loop.run_until_complete(future)
 
         else:
             print(f"Max depth should me from 0 to {self.max_depth}!")
 
 
-def main():
+def start_crawling(base_url: str, depth: int = 0):
 
     spyder = Spyder()
-    depth = 1
-    base_url = 'https://www.metro-cc.ru/'
     spyder.grab(base_url=base_url, depth=depth)
 
 
-if __name__ == '__main__':
-    # main()
-    # Start time counting
-    start_time = time.time()
-    mem = max(memory_usage(proc=main))
-    # Stop time counting
-    execution_time = time.time() - start_time
-    print(f"ok, execution time: {execution_time:.3f}s, peak memory usage: {mem} Mb")
+# start_crawling(base_url='https://lenta.ru', depth=2)
